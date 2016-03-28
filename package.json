@@ -29,5 +29,9 @@
 		]
 	},
 	"author": "Pawel Raszewski",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maestr0/cookie-monster-server.git"
+	},
 	"license": "MIT"
 }
