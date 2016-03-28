@@ -1,11 +1,33 @@
 {
-  "name": "cookie-monster-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+	"name": "cookie-monster-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"babel-core": "^6.5.2",
+		"babel-polyfill": "^6.5.0",
+		"babel-preset-es2015": "^6.5.0",
+		"debug": "^2.2.0",
+		"dotenv": "^2.0.0",
+		"babel-register": "^6.5.2"
+	},
+	"devDependencies": {
+		"chai": "^3.5.0",
+		"eslint": "^2.0.0",
+		"jscs": "^2.9.0",
+		"mocha": "^2.4.5"
+	},
+	"engines": {
+		"node": "0.12.8"
+	},
+	"babel": {
+		"presets": [
+			"es2015"
+		]
+	},
+	"author": "Pawel Raszewski",
+	"license": "MIT"
 }
