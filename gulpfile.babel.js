@@ -14,17 +14,17 @@ gulp.task('default', cb => {
   run('server', 'build', 'watch', cb);
 });
 
-gulp.build('build', cb=> {
+gulp.task('build', cb=> {
   run('clean', 'flow', 'babel', 'restart', cb);
 });
 
-gulp.build('clean', cb=> {
+gulp.task('clean', cb=> {
   rimraf(paths.destination, cb);
 });
 
-gulp.build('flow', shell.task(['flow']), {ignoreErrors: true});
+gulp.task('flow', shell.task(['flow'], {ignoreErrors: true}));
 
-gulp.build('babel', shell.task(['babel src --out-dir app']));
+gulp.task('babel', shell.task(['babel src --out-dir app']));
 
 
 let express;
