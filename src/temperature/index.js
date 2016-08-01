@@ -13,5 +13,5 @@ var tempSensor = mcpadc.open(0, {speedHz: 20000}, (err) => {
 });
 
 export default () => {
-  console.log("temp is 40C");
+  console.log("temp start");
 }
