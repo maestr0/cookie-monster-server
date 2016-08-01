@@ -1,27 +1,16 @@
-import slack from '@slack/client'
+import Botkit from 'botkit'
 
+export  default ()=> {
 
-var RtmClient = slack.RtmClient;
+  let token = process.env.SLACK_API_TOKEN || '';
+  let controller = Botkit.slackbot({debug: false});
+  controller.spawn({token: token}).startRTM();
 
-var token = process.env.SLACK_API_TOKEN || '';
+  controller.hears('hello', ['direct_message', 'direct_mention'], (bot, message) => {
+    bot.reply(message, 'Hello yourself.');
+  });
 
-var rtm = new RtmClient(token, {logLevel: 'debug'});
-rtm.start();
-
-
-var CLIENT_EVENTS = slack.CLIENT_EVENTS;
-
-rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-  console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
-});
-
-
-var RTM_EVENTS = slack.RTM_EVENTS;
-
-rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-  // Listens to all `message` events from the team
-});
-
-rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
-  // Listens to all `channel_created` events from the team
-});
+  controller.hears('', ['direct_message', 'direct_mention'], (bot, message) => {
+    bot.reply(message, 'List of available commands...');
+  });
+}
