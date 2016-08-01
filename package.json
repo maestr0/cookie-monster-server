@@ -7,9 +7,11 @@
     "start": "node ./app/index.js"
   },
   "dependencies": {
+    "@slack/client": "^3.5.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
+    "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "mcp-spi-adc": "0.0.1",
     "morgan": "^1.7.0",

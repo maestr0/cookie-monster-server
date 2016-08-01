@@ -3,6 +3,7 @@
 import express from 'express'
 import expressSetup  from './server/express.setup'
 import temp from './temperature'
+require('dotenv').config();
 
 const app = express();
 app.set('views', __dirname + '/../views');
