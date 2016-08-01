@@ -11,10 +11,10 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "^4.13.4",
-    "jade": "~1.11.0",
     "mcp-spi-adc": "0.0.1",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
+    "pug": "^2.0.0-beta4",
     "serve-favicon": "~2.3.0"
   },
   "author": "Pawel Raszewski",
