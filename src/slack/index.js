@@ -1,6 +1,7 @@
 import Botkit from 'botkit'
 import logger from '../logs'
 import tts from '../tts'
+import shellExec from '../shell'
 
 let config = {
   admin: "U026P8Q1D"
@@ -10,11 +11,17 @@ function isAdmin(user) {
   return user === config.admin
 }
 
-function execute(text, callback) {
-  tts(text, function (err, stdout, stderr) {
-    console.log(err + stdout + stderr);
-    callback(err + stdout + stderr)
-  })
+function buildCommandMessageOutput(err, stdout, stderr) {
+  return `\`\`\`
+OUTPUT
+${stdout}
+  
+STDERR
+  ${stderr}
+  
+ERR
+  ${err}
+\`\`\``
 }
 
 export  default ()=> {
@@ -46,8 +53,9 @@ export  default ()=> {
   });
 
   controller.hears('exec', ['direct_message', 'direct_mention'], (bot, message) => {
-    execute(message.text.substring(4), function (text) {
-      bot.reply(message, text);
+    shellExec(message.text.substring(4), function (err, stdout, stderr) {
+      let body = buildCommandMessageOutput(err, stdout, stderr);
+      bot.reply(message, body);
     });
   });
 
