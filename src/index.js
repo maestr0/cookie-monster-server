@@ -1,10 +1,10 @@
 /* @flow */
 
+require('dotenv').config();
 import express from 'express'
 import expressSetup  from './server/express.setup'
 // import temp from './temperature'
 import slack from './slack'
-require('dotenv').config();
 
 
 const app = express();
