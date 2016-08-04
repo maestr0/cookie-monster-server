@@ -2,6 +2,7 @@ import Botkit from 'botkit'
 import logger from '../logs'
 import tts from '../tts'
 import shellExec from '../shell'
+import temperature from '../temperature-mock'
 
 let config = {
   admin: "U026P8Q1D"
@@ -41,6 +42,7 @@ export  default ()=> {
       body += "`exec` - to execute shell command\n";
       body += "\n\n";
     }
+    body += "`temp` - show current temperature in the office\n";
     body += "`help` - to show this list\n";
     body += "`say` - to Text To Speech. e.g. say Hello Pawel\n";
     bot.reply(message, body);
@@ -57,6 +59,12 @@ export  default ()=> {
       let body = buildCommandMessageOutput(err, stdout, stderr);
       bot.reply(message, body);
     });
+  });
+
+  controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
+    temperature.readTemperature(function (err, value) {
+      bot.reply(message, `Current temperature in the office is ${temperature.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
+    })
   });
 
   controller.hears('', ['direct_message', 'direct_mention'], (bot, message) => {

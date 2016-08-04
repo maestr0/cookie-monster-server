@@ -1,17 +1,18 @@
 import mcpadc from 'mcp-spi-adc'
+import logger from '../logs'
 
-var tempSensor = mcpadc.open(0, {speedHz: 20000}, (err) => {
-  if (err) throw err;
-
-  setInterval(() => {
-    tempSensor.read((err, reading) => {
-      if (err) throw err;
-
-      console.log((reading.value * 3.3 - 0.5) * 100);
-    });
-  }, 1000);
+const tempSensor = mcpadc.open(0, {speedHz: 20000}, (err) => {
+  if (err) {
+    logger.log('error', 'Temperature sensor error', err);
+  }
 });
 
-export default () => {
-  console.log("temp start");
+function readTemperature(callback) {
+  tempSensor.read(callback);
 }
+
+function convertToF(cTempVal) {
+  return (cTempVal * (9 / 5)) + 32;
+}
+
+module.exports = {readTemperature, convertToF};
