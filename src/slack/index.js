@@ -62,7 +62,7 @@ export  default ()=> {
   });
 
   controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
-    temperature.readTemperature(function (err, value) {
+    temperature.readTemperature(function (value) {
       bot.reply(message, `Current temperature in the office is ${temperature.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
     })
   });

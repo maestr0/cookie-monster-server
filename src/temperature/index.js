@@ -8,7 +8,9 @@ const tempSensor = mcpadc.open(0, {speedHz: 20000}, (err) => {
 });
 
 function readTemperature(callback) {
-  tempSensor.read(callback);
+  tempSensor.read((err, reading) => {
+    callback((reading.value * 3.3 - 0.5) * 100);
+  });
 }
 
 function convertToF(cTempVal) {
