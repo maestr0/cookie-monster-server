@@ -16,10 +16,10 @@ function buildCommandMessageOutput(err, stdout, stderr) {
   return `\`\`\`
 OUTPUT
 ${stdout}
-  
+
 STDERR
   ${stderr}
-  
+
 ERR
   ${err}
 \`\`\``
@@ -39,7 +39,8 @@ export  default ()=> {
     let body = "List of available commands:\n\n";
     if (isAdmin(message.user)) {
       body += "Admin only:\n\n";
-      body += "`exec` - to execute shell command\n";
+      body += "`exec` - execute shell command\n";
+      body += "`update` - update code and restart app\n";
       body += "\n\n";
     }
     body += "`temp` - show current temperature in the office\n";
@@ -56,6 +57,13 @@ export  default ()=> {
 
   controller.hears('exec', ['direct_message', 'direct_mention'], (bot, message) => {
     shellExec(message.text.substring(4), function (err, stdout, stderr) {
+      let body = buildCommandMessageOutput(err, stdout, stderr);
+      bot.reply(message, body);
+    });
+  });
+
+  controller.hears('update', ['direct_message', 'direct_mention'], (bot, message) => {
+    shellExec("cd /home/pi/git/cookie-monster-server & git pull & sudo systemctl restart cookie-monster.service", function (err, stdout, stderr) {
       let body = buildCommandMessageOutput(err, stdout, stderr);
       bot.reply(message, body);
     });
