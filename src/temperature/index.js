@@ -1,7 +1,9 @@
 import mcpadc from 'mcp-spi-adc'
 import logger from '../logs'
 
-const tempSensor = mcpadc.open(0, {speedHz: 20000}, (err) => {
+const tempSensorPin = 0
+
+const tempSensor = mcpadc.open(tempSensorPin, {speedHz: 20000}, (err) => {
   if (err) {
     logger.log('error', 'Temperature sensor error', err);
   }
