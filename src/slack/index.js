@@ -2,7 +2,7 @@ import Botkit from 'botkit'
 import logger from '../logs'
 import tts from '../tts'
 import shellExec from '../shell'
-import temperature from '../temperature-mock'
+import temperature from '../temperature'
 
 let config = {
   admin: "U026P8Q1D"
