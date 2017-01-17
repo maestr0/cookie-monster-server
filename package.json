@@ -38,6 +38,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-watch": "^4.3.9",
     "rimraf": "^2.5.4",
+    "gulp-express": "*",
     "run-sequence": "^1.2.2"
   }
 }
