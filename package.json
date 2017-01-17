@@ -14,6 +14,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "loggly": "^1.1.0",
+    "mcp-spi-adc": "^0.4.0",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "pug": "^2.0.0-beta4",
@@ -36,12 +37,11 @@
     "babel-preset-es2015-node6": "^0.2.0",
     "babel-preset-stage-0": "^6.5.0",
     "gulp": "^3.9.1",
-    "gulp-express": "^0.3.5",
+    "gulp-express": "*",
     "gulp-live-server": "0.0.30",
     "gulp-shell": "^0.5.2",
     "gulp-watch": "^4.3.9",
     "rimraf": "^2.5.4",
-    "gulp-express": "*",
     "run-sequence": "^1.2.2"
   }
 }

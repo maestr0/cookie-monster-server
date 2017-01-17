@@ -4,7 +4,6 @@ import rimraf from "rimraf"
 import run from "run-sequence"
 import watch from "gulp-watch"
 import server from "gulp-live-server"
-import server from "gulp-express"
 
 const paths = {
   js: ['./src/**/*.js'],
