@@ -18,7 +18,7 @@ router.get('/sensors', function(req, res, next) {
       res.render('sensors', {
         temp: temp,
         light: light,
-        sound: 222
+        prox: 222
       });
     })
   })
