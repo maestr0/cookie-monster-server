@@ -2,7 +2,9 @@ import Botkit from 'botkit'
 import logger from '../logs'
 import tts from '../tts'
 import shellExec from '../shell'
-import temperature from '../temperature'
+import temperatureSensor from '../temperature'
+import readLight from '../light-sensor'
+import readProximity from '../proximity-sensor'
 
 let config = {
   admin: "U026P8Q1D"
@@ -44,6 +46,8 @@ export  default ()=> {
       body += "\n\n";
     }
     body += "`temp` - show current temperature in the office\n";
+    body += "`light` - show light sensor status\n";
+    body += "`proximity` - show proximity sensor status\n";
     body += "`help` - to show this list\n";
     body += "`say` - to Text To Speech. e.g. say Hello Pawel\n";
     bot.reply(message, body);
@@ -70,8 +74,20 @@ export  default ()=> {
   });
 
   controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
-    temperature.readTemperature(function (value) {
-      bot.reply(message, `Current temperature in the office is ${temperature.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
+    temperatureSensor.readTemperature(function (value) {
+      bot.reply(message, `Current temperature in the office is ${temperatureSensor.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
+    })
+  });
+
+  controller.hears('light', ['direct_message', 'direct_mention'], (bot, message) => {
+    readLight(function (value) {
+      bot.reply(message, `Current light level in the office is ${value.toFixed(2)}`);
+    })
+  });
+
+  controller.hears('proximity', ['direct_message', 'direct_mention'], (bot, message) => {
+    readProximity(function (value) {
+      bot.reply(message, `Current proximity sensor status is ${value.toFixed(2)}`);
     })
   });
 

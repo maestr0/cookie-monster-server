@@ -12,4 +12,3 @@ winston.add(winston.transports.Loggly, {
 winston.log('info',"Cookie Monster started");
 
 export default winston;
-
