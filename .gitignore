@@ -84,3 +84,4 @@ app
 .env
 public/images/
 public/javascripts/
+cookie-monster-server.iml
