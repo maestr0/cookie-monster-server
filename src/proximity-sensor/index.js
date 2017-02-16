@@ -1,7 +1,7 @@
 import mcpadc from 'mcp-spi-adc'
 import logger from '../logs'
 
-const proximitySensorPin = 8
+const proximitySensorPin = 7
 
 const proxSensor = mcpadc.open(proximitySensorPin, {speedHz: 20000}, (err) => {
   if (err) {
@@ -9,10 +9,10 @@ const proxSensor = mcpadc.open(proximitySensorPin, {speedHz: 20000}, (err) => {
   }
 });
 
-function read(callback) {
+function readProximity(callback) {
   proxSensor.read((err, reading) => {
-    callback(reading.value);
+    callback(reading.value * 100);
   });
 }
 
-module.exports = read
+module.exports = readProximity

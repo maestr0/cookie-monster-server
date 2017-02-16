@@ -12,8 +12,11 @@ installation
   LOGGLY_API_TOKEN=
   LOGGLY_API_SUBDOMAIN=
 
-  
-run
 
+== RUN ON PI3 directly
 
   `gulp`
+
+use samba share to edit files directly on Pi3
+
+  js needs to be transpiled
