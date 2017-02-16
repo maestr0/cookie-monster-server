@@ -82,3 +82,5 @@ fabric.properties
 
 app
 .env
+public/images/
+public/javascripts/
