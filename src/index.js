@@ -7,8 +7,6 @@ import slack from './slack'
 import worker from './worker'
 import logger from './logs'
 
-import lcd from './lcd-rgb'
-
 const app = express();
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'pug');

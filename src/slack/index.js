@@ -5,6 +5,7 @@ import shellExec from '../shell'
 import temperatureSensor from '../temperature'
 import readLight from '../light-sensor'
 import readProximity from '../proximity-sensor'
+import lcd from '../lcd-rgb'
 
 let config = {
   admin: "U026P8Q1D"
@@ -43,6 +44,7 @@ export  default ()=> {
       body += "Admin only:\n\n";
       body += "`exec` - execute shell command\n";
       body += "`update` - update code and restart app\n";
+      body += "`self check` - self check, test all sensors\n";
       body += "\n\n";
     }
     body += "`temp` - show current temperature in the office\n";
@@ -50,6 +52,7 @@ export  default ()=> {
     body += "`proximity` - show proximity sensor status\n";
     body += "`help` - to show this list\n";
     body += "`say` - to Text To Speech. e.g. say Hello Pawel\n";
+    body += "`write` - write something on my LCD\n";
     bot.reply(message, body);
   });
 
@@ -59,18 +62,41 @@ export  default ()=> {
     });
   });
 
+  controller.hears('write', ['direct_message', 'direct_mention'], (bot, message) => {
+      lcd.setText(message.text.substring(5).trim());
+      lcd.setRGB(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+      bot.reply(message, "OK");
+  });
+
+  controller.hears('self check', ['direct_message', 'direct_mention'], (bot, message) => {
+    if (isAdmin(message.user)) {
+      lcd.setText("SELF CHECK SELF CHECK SELF CHECK SELF CHECK");
+      bot.reply(message, "OK");
+    } else {
+      bot.reply(message, "unauthorized");
+    }
+  });
+
   controller.hears('exec', ['direct_message', 'direct_mention'], (bot, message) => {
-    shellExec(message.text.substring(4), function (err, stdout, stderr) {
-      let body = buildCommandMessageOutput(err, stdout, stderr);
-      bot.reply(message, body);
-    });
+    if (isAdmin(message.user)) {
+      shellExec(message.text.substring(4), function (err, stdout, stderr) {
+        let body = buildCommandMessageOutput(err, stdout, stderr);
+        bot.reply(message, body);
+      });
+    } else {
+      bot.reply(message, "unauthorized");
+    }
   });
 
   controller.hears('update', ['direct_message', 'direct_mention'], (bot, message) => {
-    shellExec("cd /home/pi/git/cookie-monster-server & git pull & sudo systemctl restart cookie-monster.service", function (err, stdout, stderr) {
-      let body = buildCommandMessageOutput(err, stdout, stderr);
-      bot.reply(message, body);
-    });
+    if (isAdmin(message.user)) {
+      shellExec("cd /home/pi/git/cookie-monster-server & git pull & sudo systemctl restart cookie-monster.service", function (err, stdout, stderr) {
+        let body = buildCommandMessageOutput(err, stdout, stderr);
+        bot.reply(message, body);
+      });
+    } else {
+      bot.reply(message, "unauthorized");
+    }
   });
 
   controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
