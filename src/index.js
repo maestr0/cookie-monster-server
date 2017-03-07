@@ -7,6 +7,8 @@ import slack from './slack'
 import worker from './worker'
 import logger from './logs'
 
+import lcd from './lcd-rgb'
+
 const app = express();
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'pug');
@@ -16,14 +18,29 @@ expressSetup(app);
 slack();
 
 
-var gpio = require('rpi-gpio');
+// button is attached to pin 17, led to 18
+var GPIO = require('onoff').Gpio,
+    button = new GPIO(23, 'in', 'both');
 
-gpio.on('change', function(channel, value) {
-    logger.info('Channel ' + channel + ' value is now ' + value);
-});
-gpio.setup(23, gpio.DIR_IN, gpio.EDGE_BOTH);
-gpio.setup(24, gpio.DIR_IN, gpio.EDGE_BOTH);
+// define the callback function
+function light(err, state) {
 
-module.exports = gpio
+  // check the state of the button
+  // 1 == pressed, 0 == not pressed
+  if(state == 1) {
+    // turn LED on
+logger.info('ON');
+  } else {
+    // turn LED off
+logger.info('OFF');
+  }
+
+}
+
+// pass the callback function to the
+// as the first argument to watch()
+button.watch(light);
+
+
 
 logger.info('CM started');

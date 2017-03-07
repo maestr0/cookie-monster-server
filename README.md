@@ -15,7 +15,9 @@ installation
 
 == RUN ON PI3 directly
 
-  `gulp`
+  `sudo service cookie-monster stop`
+
+  `sudo gulp`
 
 use samba share to edit files directly on Pi3
 
