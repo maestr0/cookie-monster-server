@@ -2,10 +2,7 @@ import Botkit from 'botkit'
 import logger from '../logs'
 import tts from '../tts'
 import shellExec from '../shell'
-import temperatureSensor from '../temperature'
-import readLight from '../light-sensor'
-import readProximity from '../proximity-sensor'
-import lcd from '../lcd-rgb'
+import sensors from '../sensors'
 
 let config = {
   admin: "U026P8Q1D"
@@ -63,14 +60,14 @@ export  default ()=> {
   });
 
   controller.hears('write', ['direct_message', 'direct_mention'], (bot, message) => {
-      lcd.setText(message.text.substring(5).trim());
-      lcd.setRGB(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+      sensors.lcd.setText(message.text.substring(5).trim());
+      sensors.lcd.setRGB(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
       bot.reply(message, "OK");
   });
 
   controller.hears('self check', ['direct_message', 'direct_mention'], (bot, message) => {
     if (isAdmin(message.user)) {
-      lcd.setText("SELF CHECK SELF CHECK SELF CHECK SELF CHECK");
+      sensors.lcd.setText("SELF CHECK SELF CHECK SELF CHECK SELF CHECK");
       bot.reply(message, "OK");
     } else {
       bot.reply(message, "unauthorized");
@@ -100,19 +97,19 @@ export  default ()=> {
   });
 
   controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
-    temperatureSensor.readTemperature(function (value) {
+    sensors.temp.readTemperature(function (value) {
       bot.reply(message, `Current temperature in the office is ${temperatureSensor.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
     })
   });
 
   controller.hears('light', ['direct_message', 'direct_mention'], (bot, message) => {
-    readLight(function (value) {
+    sensors.light(function (value) {
       bot.reply(message, `Current light level in the office is ${value.toFixed(2)}`);
     })
   });
 
   controller.hears('proximity', ['direct_message', 'direct_mention'], (bot, message) => {
-    readProximity(function (value) {
+    sensors.proximity(function (value) {
       bot.reply(message, `Current proximity sensor status is ${value.toFixed(2)}`);
     })
   });

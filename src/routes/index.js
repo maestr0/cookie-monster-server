@@ -1,9 +1,8 @@
 'use strict'
 
 import express from 'express'
-import {readTemperature} from '../temperature'
-import readLight from '../light-sensor'
-import readProximity from '../proximity-sensor'
+import sensors from '../sensors'
+
 var router = express.Router();
 
 /* GET home page. */
@@ -14,9 +13,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/sensors', function(req, res, next) {
-  readTemperature((temp) => {
-    readLight((light) => {
-      readProximity((distance) => {
+  sensors.temp.readTemperature((temp) => {
+    sensors.light((light) => {
+      sensors.proximity((distance) => {
         res.render('sensors', {
           temp: temp,
           light: light,
