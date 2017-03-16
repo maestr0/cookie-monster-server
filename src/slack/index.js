@@ -25,7 +25,7 @@ ERR
 \`\`\``
 }
 
-export  default ()=> {
+export default (robot) => {
 
   let token = process.env.SLACK_API_TOKEN || '';
   let controller = Botkit.slackbot({
@@ -33,7 +33,9 @@ export  default ()=> {
     logger: logger
   });
 
-  controller.spawn({token: token}).startRTM();
+  controller.spawn({
+    token: token
+  }).startRTM();
 
   controller.hears('help', ['direct_message', 'direct_mention'], (bot, message) => {
     let body = "List of available commands:\n\n";
@@ -54,21 +56,24 @@ export  default ()=> {
   });
 
   controller.hears('say', ['direct_message', 'direct_mention'], (bot, message) => {
-    tts(message.text.substring(3), function (text) {
+    tts(message.text.substring(3), function(text) {
       bot.reply(message, text);
     });
   });
 
   controller.hears('write', ['direct_message', 'direct_mention'], (bot, message) => {
-      sensors.lcd.setText(message.text.substring(5).trim());
-      sensors.lcd.setRGB(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
-      bot.reply(message, "OK");
+    sensors.lcd.setText(message.text.substring(5).trim());
+    sensors.lcd.setRGB(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+    bot.reply(message, "OK");
   });
 
   controller.hears('self check', ['direct_message', 'direct_mention'], (bot, message) => {
     if (isAdmin(message.user)) {
-      sensors.lcd.setText("SELF CHECK SELF CHECK SELF CHECK SELF CHECK");
-      bot.reply(message, "OK");
+      if (robot.selfCheck()) {
+        bot.reply(message, "OK");
+      } else {
+        bot.reply(message, "ERROR");
+      };
     } else {
       bot.reply(message, "unauthorized");
     }
@@ -76,7 +81,7 @@ export  default ()=> {
 
   controller.hears('exec', ['direct_message', 'direct_mention'], (bot, message) => {
     if (isAdmin(message.user)) {
-      shellExec(message.text.substring(4), function (err, stdout, stderr) {
+      shellExec(message.text.substring(4), function(err, stdout, stderr) {
         let body = buildCommandMessageOutput(err, stdout, stderr);
         bot.reply(message, body);
       });
@@ -87,7 +92,7 @@ export  default ()=> {
 
   controller.hears('update', ['direct_message', 'direct_mention'], (bot, message) => {
     if (isAdmin(message.user)) {
-      shellExec("cd /home/pi/git/cookie-monster-server & git pull & sudo systemctl restart cookie-monster.service", function (err, stdout, stderr) {
+      shellExec("cd /home/pi/git/cookie-monster-server & git pull & sudo systemctl restart cookie-monster.service", function(err, stdout, stderr) {
         let body = buildCommandMessageOutput(err, stdout, stderr);
         bot.reply(message, body);
       });
@@ -97,19 +102,19 @@ export  default ()=> {
   });
 
   controller.hears('temp', ['direct_message', 'direct_mention'], (bot, message) => {
-    sensors.temp.readTemperature(function (value) {
+    sensors.temp.readTemperature(function(value) {
       bot.reply(message, `Current temperature in the office is ${temperatureSensor.convertToF(value).toFixed(1)}F / ${value.toFixed(1)}C`);
     })
   });
 
   controller.hears('light', ['direct_message', 'direct_mention'], (bot, message) => {
-    sensors.light(function (value) {
+    sensors.light(function(value) {
       bot.reply(message, `Current light level in the office is ${value.toFixed(2)}`);
     })
   });
 
   controller.hears('proximity', ['direct_message', 'direct_mention'], (bot, message) => {
-    sensors.proximity(function (value) {
+    sensors.proximity(function(value) {
       bot.reply(message, `Current proximity sensor status is ${value.toFixed(2)}`);
     })
   });
